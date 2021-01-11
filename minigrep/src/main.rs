@@ -1,4 +1,5 @@
 use std::env;
+use std::error::Error;
 use std::fs;
 use std::process;
 
@@ -13,9 +14,16 @@ fn main() {
         config.query, config.filename
     );
 
-    let content =
-        fs::read_to_string(config.filename).expect("Something went wrong reading the file");
+    if let Err(err) = run(config) {
+        println!("Application Error: {}", err);
+        process::exit(1);
+    }
+}
+
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let content = fs::read_to_string(config.filename)?;
     print!("With text :\n{}", content);
+    Ok(())
 }
 
 struct Config {
