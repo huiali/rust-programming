@@ -91,6 +91,7 @@ pub fn notify4<T: Summary + Display>(item: T) {
 fn some_function<T: Summary + Copy, U: Clone + Debug>(t: T, u: U) -> i32 {
     1
 }
+
 fn some_function2<T, U>(t: T, u: U) -> i32
 where
     T: Summary + Copy,
