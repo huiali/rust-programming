@@ -10,7 +10,7 @@ fn main() {
 
     //参数转换为对象
     let config = Config::new(&args).unwrap_or_else(|err| {
-        println!("Problem parsing arguments:{}", err);
+        eprintln!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
     println!(
@@ -19,8 +19,8 @@ fn main() {
     );
 
     //读取文件
-    if let Err(err) = run(config) {
-        println!("Application Error: {}", err);
+    if let Err(e) = run(config) {
+        eprintln!("Application error: {}", e);
         process::exit(1);
     }
 }
