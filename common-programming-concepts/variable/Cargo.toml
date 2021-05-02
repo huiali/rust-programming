@@ -1,5 +1,5 @@
 [package]
-name = "common-programming-concepts"
+name = "variable"
 version = "0.1.0"
 authors = ["huiali <huiali@hotmail.com>"]
 edition = "2018"

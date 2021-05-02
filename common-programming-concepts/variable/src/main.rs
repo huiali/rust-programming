@@ -29,6 +29,4 @@ fn main() {
     let mut spaces = "   ";
     // spaces = spaces.len(); 不能改变变量的类型
     println!("The value of spaces is: {}", spaces);
-
-    //数据类型
 }
