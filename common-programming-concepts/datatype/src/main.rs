@@ -4,8 +4,10 @@ fn main() {
     let guess: u32 = "55".parse().expect("Not a number!");
 
     // 标量类型 -----
-    
-    / 整型
+
+    // 标量（scalar）类型代表一个单独的值。Rust 有四种基本的标量类型：整型、浮点型、布尔类型和字符类型。
+
+    // 整型
 
     // 长度         有符号	 无符号
     // 8-bit	    i8  	  u8
@@ -28,6 +30,59 @@ fn main() {
     //  Binary (二进制)	             0b1111_0000
     //  Byte (单字节字符)(仅限于u8)	  b'A'
 
-
     // 浮点型
+
+    // Rust 的浮点数类型是 f32 和 f64，分别占 32 位和 64 位。默认类型是 f64
+    let x = 2.0; // f64
+    let y: f32 = 3.0; // f32
+
+    // 数值运算
+    // 基本数学运算：加法、减法、乘法、除法和取余
+    // 加法
+    let sum = 5 + 10;
+    // 减法
+    let difference = 95.5 - 4.3;
+    // 乘法
+    let product = 4 * 30;
+    // 除法
+    let quotient = 56.7 / 32.2;
+    // 取余
+    let remainder = 43 % 5;
+
+    // 布尔型
+    let t = true;
+    let f: bool = false; // 显式指定类型注解
+
+    // 字符类型
+
+    // Rust 的 char 类型的大小为四个字节(four bytes)，并代表了一个 Unicode 标量值（Unicode Scalar Value）
+    let c = 'z';
+    let z = 'ℤ';
+    let heart_eyed_cat = '😻';
+
+    // 复合类型 ----
+
+    // 复合类型（Compound types）可以将多个值组合成一个类型。Rust 有两个原生的复合类型：元组（tuple）和数组（array）。
+
+    // 元组类型
+    // 元组是一个将多个其他类型的值组合进一个复合类型的主要方式。元组长度固定：一旦声明，其长度不会增大或缩小。
+    let tup = (500, 6.4, 1);
+    let (x, y, z) = tup;
+    println!("The value of y is: {}", y);
+    // 程序首先创建了一个元组并绑定到 tup 变量上。
+    // 接着使用了 let 和一个模式将 tup 分成了三个不同的变量，x、y 和 z。这叫做 解构（destructuring），因为它将一个元组拆成了三个部分。最后，程序打印出了 y 的值
+
+    // 除了使用模式匹配解构外，也可以使用点号（.）后跟值的索引来直接访问它们。
+    let x: (i32, f64, u8) = (500, 6.4, 1);
+    let five_hundred = x.0;
+    let six_point_four = x.1;
+    let one = x.2;
+
+    // 数组类型
+    // 数组是一整块分配在栈上的内存。
+    // 数组中的每个元素的类型必须相同。Rust 中的数组与一些其他语言中的数组不同，因为 Rust 中的数组是固定长度的：一旦声明，它们的长度不能增长或缩小。
+    let a = [1, 2, 3, 4, 5];
+
+    let first = a[0];
+    let second = a[1];
 }
