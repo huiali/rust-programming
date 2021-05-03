@@ -1,3 +1,6 @@
+// struct，或者 structure，是一个自定义数据类型，
+// 允许你命名和包装多个相关的值，从而形成一个有意义的组合。
+
 fn main() {
     let mut user1 = User {
         sign_in_count: 1,
