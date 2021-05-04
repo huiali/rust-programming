@@ -13,3 +13,5 @@ structure/struct/target/
 structure/sample/target/
 structure/method-syntax/target/
 enums/define/target/
+enums/define/src/main.exe
+enums/define/src/main.pdb
