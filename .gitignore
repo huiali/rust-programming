@@ -15,3 +15,5 @@ structure/method-syntax/target/
 enums/define/target/
 enums/define/src/main.exe
 enums/define/src/main.pdb
+enums/if-let-control/target/
+enums/match-control/target/
