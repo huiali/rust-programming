@@ -19,3 +19,4 @@ enums/if-let-control/target/
 enums/match-control/target/
 collections/vector/target/
 collections/string/target/
+collections/hashmap/target/
