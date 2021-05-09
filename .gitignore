@@ -17,3 +17,4 @@ enums/define/src/main.exe
 enums/define/src/main.pdb
 enums/if-let-control/target/
 enums/match-control/target/
+collections/vector/target/
