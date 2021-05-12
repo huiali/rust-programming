@@ -22,3 +22,4 @@ collections/string/target/
 collections/hashmap/target/
 error-handling/panic/target/
 error-handling/error-result/target/
+generic/target/
