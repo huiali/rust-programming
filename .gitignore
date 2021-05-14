@@ -20,3 +20,4 @@ enums/match-control/target/
 collections/vector/target/
 collections/string/target/
 collections/hashmap/target/
+error-handling/panic/target/
