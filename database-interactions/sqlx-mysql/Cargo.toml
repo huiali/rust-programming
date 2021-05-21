@@ -7,3 +7,13 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0"
+async-std = { version = "1.8.0", features = [ "attributes" ] }
+futures = "0.3"
+paw = "1.0"
+structopt = { version = "0.3", features = [ "paw" ] }
+
+[dependencies.sqlx]
+version = "0.5"
+default-features = false
+features = [ "runtime-async-std-native-tls", "macros", "mysql", "uuid", "chrono", "bigdecimal", "json", "ipnetwork", "tls"]
