@@ -26,3 +26,4 @@ generic/target/
 database-interactions/sqlx-mysql/target/
 database-interactions/mysql/target/
 database-interactions/mysql_async/target/
+database-interactions/mysql_diesel/target/
