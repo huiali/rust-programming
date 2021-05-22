@@ -1,5 +1,4 @@
-use sqlx::mysql::MySqlRow;
-use std::vec;
+use sqlx::{FromRow, mysql::MySqlRow};
 
 use sqlx::Row;
 use sqlx::{mysql::MySqlPoolOptions, query};
@@ -11,20 +10,11 @@ async fn main() -> anyhow::Result<()> {
     let pool = MySqlPoolOptions::new().connect(database_url).await?;
 
     let sql = "select `id`,`key`,`description` AS description from todos";
-    let rows = query(sql)
-    .map(|row: MySqlRow| {
-        for i in row.columns() {
-           
-        }
-        // map the row into a user-defined domain type
-    })
-    .fetch_all(&pool)
-    .await?;
+    let rows = query(sql).fetch_all(&pool).await?;
 
     // let row: _ = sqlx::query_as::<_, O>("SELECT $1")
     //     .bind(150_i64)
     //     .fetch_one(&pool).await?;
-
 
     // let columns: Vec<&str> = Vec::new();
     // // println!("{:?}", rows);
