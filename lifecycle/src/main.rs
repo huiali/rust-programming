@@ -1,3 +1,5 @@
+use core::fmt::Display;
+
 fn main() {
     {
         let r;                //-----------------+-- 'a
@@ -38,5 +40,58 @@ fn main() {
 //     }
 // }
 
-// 函数签名中的生命周期注解
 
+// 生命周期注解语法
+// &i32        // 引用
+// &'a i32     // 带有显式生命周期的引用
+// &'a mut i32 // 带有显式生命周期的可变引用
+
+// 函数签名中的生命周期注解
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+// 它的实际含义是 longest 函数返回的引用的生命周期与传入该函数的引用的生命周期的较小者一致。
+// 泛型生命周期 'a 的具体生命周期等同于 x 和 y 的生命周期中较小的那一个。
+// 因为我们用相同的生命周期参数 'a 标注了返回的引用值，所以返回的引用值就能保证在 x 和 y 中较短的那个生命周期结束之前保持有效。
+
+// 结构体中定义生命周期注解
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+
+// 方法定义中的生命周期注解
+impl<'a> ImportantExcerpt<'a> {
+    fn level(&self) -> i32 {
+        3
+    }
+}
+
+
+impl<'a> ImportantExcerpt<'a> {
+    fn announce_and_return_part(&self, announcement: &str) -> &str {
+        println!("Attention please: {}", announcement);
+        self.part
+    }
+}
+
+//静态生命周期
+// let s: &'static str = "I have a static lifetime.";
+// 'static，其生命周期能够存活于整个程序期间。
+
+
+// 结合泛型类型参数、trait bounds 和生命周期
+fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+    where T: Display
+{
+    println!("Announcement! {}", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
