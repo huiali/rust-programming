@@ -1,4 +1,4 @@
-use sqlx::{FromRow, mysql::MySqlRow};
+use sqlx::{mysql::MySqlRow, FromRow};
 
 use sqlx::Row;
 use sqlx::{mysql::MySqlPoolOptions, query};
@@ -10,7 +10,15 @@ async fn main() -> anyhow::Result<()> {
     let pool = MySqlPoolOptions::new().connect(database_url).await?;
 
     let sql = "select `id`,`key`,`description` AS description from todos";
-    let rows = query(sql).fetch_all(&pool).await?;
+    let rows = query(sql).map(|row: MySqlRow| row).fetch_all(&pool).await?;
+    let rows = sqlx::query_unchecked!(
+        "select `id`,`key`,`description` AS description from todos where id = ?",
+        1
+    )
+    .fetch_all(&pool) // -> Vec<{ country: String, count: i64 }>
+    .await?;
+    println!("{:?}", rows);
+
 
     // let row: _ = sqlx::query_as::<_, O>("SELECT $1")
     //     .bind(150_i64)
