@@ -29,3 +29,4 @@ database-interactions/mysql_async/target/
 database-interactions/mysql_diesel/target/
 closures/target/
 database-interactions/actix_sqlx_mysql/target/
+database-interactions/actix-mysql/target/
