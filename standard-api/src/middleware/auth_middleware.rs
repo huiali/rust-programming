@@ -79,9 +79,11 @@ where
                         if authen_str.starts_with("bearer") || authen_str.starts_with("Bearer") {
                             let auth_token = authen_str[6..authen_str.len()].trim();
                             if let Ok(token) = Token::decode(auth_token.to_string()) {
-                                println!("{:#?}", token);
-                                req.extensions_mut().insert(token);
-                                authenticate_pass = true;
+                                if token.permissions>0 {
+                                    println!("{:#?}", token);
+                                    req.extensions_mut().insert(token);
+                                    authenticate_pass = true;    
+                                }
                             }
                         }
                     }

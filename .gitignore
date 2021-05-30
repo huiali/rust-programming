@@ -29,3 +29,4 @@ closures/target/
 database-interactions/actix_sqlx_mysql/target/
 database-interactions/actix-mysql/target/
 standard-api/target/
+smart-pointers/target/
