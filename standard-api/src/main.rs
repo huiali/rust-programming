@@ -19,7 +19,7 @@ async fn main() -> Result<()> {
     env::set_var("RUST_LOG", "actix_web=Warn");
     env_logger::init();
 
-    let database_url = "mysql://huiali@localhost:3306/todos"; // &env::var("DATABASE_URL")?;
+    let database_url = "mysql://root:huiali123@huiali-storage.com:3306/todos"; // &env::var("DATABASE_URL")?;
     let pool = MySqlPoolOptions::new().connect(&database_url).await?;
 
     HttpServer::new(move || {
