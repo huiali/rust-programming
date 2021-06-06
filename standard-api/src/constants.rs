@@ -1,4 +1,5 @@
-// Messages
+use std::collections::HashMap;
+
 pub const MESSAGE_OK: &str = "ok";
 pub const MESSAGE_CAN_NOT_FETCH_DATA: &str = "Can not fetch data";
 pub const MESSAGE_CAN_NOT_INSERT_DATA: &str = "Can not insert data";
@@ -11,7 +12,7 @@ pub const MESSAGE_LOGIN_FAILED: &str = "Wrong username or password, please try a
 pub const MESSAGE_USER_NOT_FOUND: &str = "User not found, please signup";
 pub const MESSAGE_LOGOUT_SUCCESS: &str = "Logout successfully";
 pub const MESSAGE_PROCESS_TOKEN_ERROR: &str = "Error while processing token";
-pub const MESSAGE_INVALID_TOKEN: &str = "Invalid token, please login again";
+pub const MESSAGE_INVALID_TOKEN: &str = "Invalid token, please auth again";
 pub const MESSAGE_INTERNAL_SERVER_ERROR: &str = "Internal Server Error";
 
 // Bad request messages
@@ -24,4 +25,12 @@ pub const AUTHORIZATION: &str = "Authorization";
 pub const EMPTY: &str = "";
 
 // ignore routes
-pub const IGNORE_ROUTES: [&str; 3] = ["/api/ping", "/api/auth/signup", "/api/auth/login"];
+pub const IGNORE_ROUTES: [&str; 2] = ["/ping", "/hey"];
+
+lazy_static! {
+    static ref HASHMAP: HashMap<&'static str, i32> = {
+        let mut m = HashMap::new();
+        m.insert("/todo/api", 1);
+        m
+    };
+}

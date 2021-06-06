@@ -1,9 +1,10 @@
+use crate::constants::{AUTHORIZATION, EMPTY, IGNORE_ROUTES, MESSAGE_INVALID_TOKEN};
+use crate::response::ResponseBody;
+use crate::token::Token;
 use actix_service::{Service, Transform};
-use actix_web::body::ResponseBody;
-use actix_web::http::header::{HeaderName, HeaderValue};
 use actix_web::{
     dev::{ServiceRequest, ServiceResponse},
-    http::Method,
+    http::{HeaderName, HeaderValue, Method},
     Error, HttpResponse,
 };
 use futures::{
@@ -65,26 +66,20 @@ where
         if Method::OPTIONS == *req.method() {
             authenticate_pass = true;
         } else {
-            for ignore_route in constants::IGNORE_ROUTES.iter() {
-                if req.path().starts_with(ignore_route) {
+            for ignore_route in IGNORE_ROUTES.iter() {
+                if req.path().eq_ignore_ascii_case(ignore_route) {
                     authenticate_pass = true;
+                    break;
                 }
             }
             if !authenticate_pass {
-                if let Some(authen_header) = req.headers_mut().get(constants::AUTHORIZATION) {
-                    info!("Parsing authorization header...");
+                if let Some(authen_header) = req.headers().get(AUTHORIZATION) {
                     if let Ok(authen_str) = authen_header.to_str() {
                         if authen_str.starts_with("bearer") || authen_str.starts_with("Bearer") {
-                            info!("Parsing token...");
-                            let token = authen_str[6..authen_str.len()].trim();
-                            if let Ok(token_data) = token_utils::decode_token(token.to_string()) {
-                                info!("Decoding token...");
-                                if token_utils::verify_token(&token_data, &pool).is_ok() {
-                                    info!("Valid token");
-                                    authenticate_pass = true;
-                                } else {
-                                    error!("Invalid token");
-                                }
+                            let auth_token = authen_str[6..authen_str.len()].trim();
+                            if let Ok(token) = Token::decode(auth_token.to_string()) {
+                                println!("{:#?}", token);
+                                authenticate_pass = true;
                             }
                         }
                     }
@@ -101,10 +96,7 @@ where
             Box::pin(async move {
                 Ok(req.into_response(
                     HttpResponse::Unauthorized()
-                        .json(ResponseBody::new(
-                            constants::MESSAGE_INVALID_TOKEN,
-                            constants::EMPTY,
-                        ))
+                        .json(ResponseBody::new(MESSAGE_INVALID_TOKEN, EMPTY))
                         .into_body(),
                 ))
             })
