@@ -4,6 +4,10 @@ use sqlx::MySqlPool;
 
 #[get("/todos")]
 async fn find_all(db_pool: web::Data<MySqlPool>) -> impl Responder {
+    // let t = req.0;
+    // println!(
+    //     "the handler is token:{:#?}",t
+    // );
     let result = Todo::find_all(db_pool.get_ref()).await;
     match result {
         Ok(todos) => HttpResponse::Ok().json(todos),

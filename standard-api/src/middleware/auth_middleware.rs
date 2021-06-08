@@ -1,3 +1,4 @@
+use actix_web::web::Payload;
 use crate::constants::{AUTHORIZATION, EMPTY, IGNORE_ROUTES, MESSAGE_INVALID_TOKEN};
 use crate::response::ResponseBody;
 use crate::token::Token;
@@ -7,6 +8,7 @@ use actix_web::{
     http::{HeaderName, HeaderValue, Method},
     Error, HttpResponse,
 };
+use actix_web::HttpMessage;
 use futures::{
     future::{ok, Ready},
     Future,
@@ -79,6 +81,7 @@ where
                             let auth_token = authen_str[6..authen_str.len()].trim();
                             if let Ok(token) = Token::decode(auth_token.to_string()) {
                                 println!("{:#?}", token);
+                                req.extensions_mut().insert(token);
                                 authenticate_pass = true;
                             }
                         }

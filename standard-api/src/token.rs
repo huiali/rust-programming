@@ -1,9 +1,15 @@
+use crate::constants::AUTHORIZATION;
+use actix_web::error::ErrorUnauthorized;
+use actix_web::Error;
+use actix_web::FromRequest;
+
+use futures::Future;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
 use std::env;
+use std::pin::Pin;
 
-#[derive(Debug)]
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Token {
     pub iat: i64,
     pub exp: i64,
@@ -34,3 +40,26 @@ impl Token {
         Err(())
     }
 }
+// impl FromRequest for Token {
+//     type Config = ();
+//     type Error = Error;
+//     type Future = Pin<Box<dyn Future<Output = Result<Token, Error>>>>;
+
+//     fn from_request(
+//         req: &actix_web::HttpRequest,
+//         _: &mut actix_web::dev::Payload,
+//     ) -> <Self as actix_web::FromRequest>::Future {
+//         if let Some(authen_header) = req.headers().get(AUTHORIZATION) {
+//             if let Ok(authen_str) = authen_header.to_str() {
+//                 if authen_str.starts_with("bearer") || authen_str.starts_with("Bearer") {
+//                     let auth_token = authen_str[6..authen_str.len()].trim();
+//                     if let Ok(token) = Token::decode(auth_token.to_string()) {
+//                          println!("middleware token is {:#?}", token);
+//                         return Box::pin(async move { Ok(token) });
+//                     }
+//                 }
+//             }
+//         }
+//         Box::pin(async { Err(ErrorUnauthorized("unauthorized")) })
+//     }
+// }
