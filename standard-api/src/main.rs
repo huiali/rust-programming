@@ -35,7 +35,7 @@ async fn main() -> Result<()> {
             )
             .data(pool.clone())
             .wrap(actix_web::middleware::Logger::default())
-            // .wrap(crate::middleware::auth_middleware::Authentication)
+            .wrap(crate::middleware::auth_middleware::Authentication)
             .service(ping)
             .route("/hey", web::get().to(manual_hello))
             .configure(todo::init) // init todo routes

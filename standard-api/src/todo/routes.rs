@@ -1,13 +1,11 @@
 use crate::todo::Todo;
+use crate::token::Token;
 use actix_web::{get, web, HttpResponse, Responder};
 use sqlx::MySqlPool;
 
 #[get("/todos")]
-async fn find_all(db_pool: web::Data<MySqlPool>) -> impl Responder {
-    // let t = req.0;
-    // println!(
-    //     "the handler is token:{:#?}",t
-    // );
+async fn find_all(db_pool: web::Data<MySqlPool>, token: Token) -> impl Responder {
+    println!("req is {:#?}", token);
     let result = Todo::find_all(db_pool.get_ref()).await;
     match result {
         Ok(todos) => HttpResponse::Ok().json(todos),

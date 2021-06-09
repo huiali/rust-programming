@@ -1,15 +1,17 @@
-use crate::constants::AUTHORIZATION;
+use actix_web::dev::Payload;
 use actix_web::error::ErrorUnauthorized;
 use actix_web::Error;
 use actix_web::FromRequest;
-
+use actix_web::HttpRequest;
 use futures::Future;
 use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 use serde::{Deserialize, Serialize};
+use std::clone::Clone;
 use std::env;
 use std::pin::Pin;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone)]
+#[derive( Debug, Serialize, Deserialize)]
 pub struct Token {
     pub iat: i64,
     pub exp: i64,
@@ -63,3 +65,21 @@ impl Token {
 //         Box::pin(async { Err(ErrorUnauthorized("unauthorized")) })
 //     }
 // }
+
+impl FromRequest for Token {
+    type Config = ();
+    type Error = Error;
+    type Future = Pin<Box<dyn Future<Output = Result<Token, Error>>>>;
+
+    fn from_request(
+        req: &HttpRequest,
+        _: &mut Payload,
+    ) -> <Self as actix_web::FromRequest>::Future {
+        if let Some(token_ref) = req.extensions().get::<Token>() {
+            let token = token_ref.clone();
+            Box::pin(async move { Ok(token) })
+        } else {
+            Box::pin(async { Err(ErrorUnauthorized("unauthorized")) })
+        }
+    }
+}

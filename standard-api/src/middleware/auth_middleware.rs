@@ -1,4 +1,3 @@
-use actix_web::web::Payload;
 use crate::constants::{AUTHORIZATION, EMPTY, IGNORE_ROUTES, MESSAGE_INVALID_TOKEN};
 use crate::response::ResponseBody;
 use crate::token::Token;
