@@ -31,3 +31,4 @@ database-interactions/actix-mysql/target/
 standard-api/target/
 attribute-macro/target/
 rust-course/rust01/target/
+hello-world/target/
