@@ -2,19 +2,20 @@ use core::fmt::Display;
 
 fn main() {
     {
-        let r;                //-----------------+-- 'a
-        {                     //                 |
-            let x = 5;        //  -+--- 'b       |
-            r = &x;           //   |             |
-        }                     //  -+             |
-        //println!("{}", r)     //               |
-    }                         //-----------------|
-    //借用检查器
-    // 这里将 r 的生命周期标记为 'a 并将 x 的生命周期标记为 'b。
-    // 内部的 'b 块要比外部的生命周期 'a 小得多。
-    // 在编译时，Rust 比较这两个生命周期的大小，
-    // 并发现 r 拥有生命周期 'a，不过它引用了一个拥有生命周期 'b 的对象。
-    // 程序被拒绝编译，因为生命周期 'b 比生命周期 'a 要小：被引用的对象比它的引用者存在的时间更短。
+        let r; //-----------------+-- 'a
+        {
+            //                 |
+            let x = 5; //  -+--- 'b       |
+            r = &x; //   |             |
+        } //  -+             |
+          //println!("{}", r)     //               |
+    } //-----------------|
+      //借用检查器
+      // 这里将 r 的生命周期标记为 'a 并将 x 的生命周期标记为 'b。
+      // 内部的 'b 块要比外部的生命周期 'a 小得多。
+      // 在编译时，Rust 比较这两个生命周期的大小，
+      // 并发现 r 拥有生命周期 'a，不过它引用了一个拥有生命周期 'b 的对象。
+      // 程序被拒绝编译，因为生命周期 'b 比生命周期 'a 要小：被引用的对象比它的引用者存在的时间更短。
     {
         let x = 5; //-----------------+-- 'b
                    //                 |
@@ -29,7 +30,6 @@ fn main() {
 
     // let result = longest(string1.as_str(), string2);
     // println!("The longest string is {}", result);
-
 }
 
 // fn longest(x: &str, y: &str) -> &str {
@@ -39,7 +39,6 @@ fn main() {
 //         y
 //     }
 // }
-
 
 // 生命周期注解语法
 // &i32        // 引用
@@ -63,14 +62,12 @@ struct ImportantExcerpt<'a> {
     part: &'a str,
 }
 
-
 // 方法定义中的生命周期注解
 impl<'a> ImportantExcerpt<'a> {
     fn level(&self) -> i32 {
         3
     }
 }
-
 
 impl<'a> ImportantExcerpt<'a> {
     fn announce_and_return_part(&self, announcement: &str) -> &str {
@@ -83,10 +80,10 @@ impl<'a> ImportantExcerpt<'a> {
 // let s: &'static str = "I have a static lifetime.";
 // 'static，其生命周期能够存活于整个程序期间。
 
-
 // 结合泛型类型参数、trait bounds 和生命周期
 fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
-    where T: Display
+where
+    T: Display,
 {
     println!("Announcement! {}", ann);
     if x.len() > y.len() {
