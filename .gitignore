@@ -1,3 +1,4 @@
+rust-course/rust03/target/debug/
 trait/sample/target/
 lifecycle/target/
 minigrep/target/
@@ -29,10 +30,7 @@ closures/target/
 database-interactions/actix_sqlx_mysql/target/
 database-interactions/actix-mysql/target/
 standard-api/target/
-<<<<<<< HEAD
 attribute-macro/target/
 rust-course/rust01/target/
 hello-world/target/
-=======
 smart-pointers/target/
->>>>>>> 982caf67ff95e5b0cb54908a202365efcebd24a6
