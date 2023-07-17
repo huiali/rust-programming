@@ -11,8 +11,8 @@ use mongodb::Client;
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 
-const MONGO_DB: &'static str = "report";
-const MONGO_COLL_DATASOURCE: &'static str = "model";
+const MONGO_DB: &'static str = "samples";
+const MONGO_COLL_DATASOURCE: &'static str = "sample";
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Sample {
@@ -56,11 +56,11 @@ impl Sample {
 
         let filter = doc! {"_rid":rid,"created_by":&user_id};
         let mut cursor = collection.find(filter.clone(), None).await?;
-        let mut query_com_bin_arr = Vec::new();
-        while let Some(query_com_bin) = cursor.try_next().await? {
-            query_com_bin_arr.push(query_com_bin);
+        let mut sample_arr = Vec::new();
+        while let Some(sample) = cursor.try_next().await? {
+            sample_arr.push(sample);
         }
-        Ok(query_com_bin_arr)
+        Ok(sample_arr)
     }
 
     pub async fn create(
@@ -77,7 +77,7 @@ impl Sample {
         //创建人、创建时间、修改人、修改时间
         let chrono_dt = Utc::now().with_timezone(&FixedOffset::east_opt(8 * 3600).unwrap());
         let bson_dt = bson::DateTime::from_chrono(chrono_dt);
-        let mut query_com_bin = Sample {
+        let mut sample = Sample {
             name: req.name,
             created_by: Some(user_id.clone()),
             created_at: Some(bson_dt),
@@ -88,17 +88,16 @@ impl Sample {
             values: req.values,
         };
 
-        let mut document = bson::to_document(&query_com_bin)?;
+        let mut document = bson::to_document(&sample)?;
         document.remove("_id");
         let result = collection.insert_one(document, None).await?;
-        query_com_bin._id = result.inserted_id.as_object_id();
-        Ok(Some(query_com_bin))
+        sample._id = result.inserted_id.as_object_id();
+        Ok(Some(sample))
     }
 
-    #[tracing::instrument]
     pub async fn update(
         data: Data<Mutex<Client>>,
-        query_com_bin: Sample,
+        sample: Sample,
         id: &String,
         user_id: &String,
     ) -> Result<Option<Sample>> {
@@ -112,7 +111,7 @@ impl Sample {
 
         let chrono_dt = Utc::now().with_timezone(&FixedOffset::east_opt(8 * 3600).unwrap());
         let bson_dt = bson::DateTime::from_chrono(chrono_dt);
-        let mut document = bson::to_document(&query_com_bin)?;
+        let mut document = bson::to_document(&sample)?;
         document.remove("_id");
         document.remove("_rid");
         document.remove("created_by");
@@ -124,10 +123,9 @@ impl Sample {
         let update = doc! { "$set": document};
 
         collection.update_one(query, update, None).await?;
-        return Ok(Some(query_com_bin));
+        return Ok(Some(sample));
     }
 
-    #[tracing::instrument]
     pub async fn delete(data: Data<Mutex<Client>>, ids: Vec<ObjectId>) -> Result<Option<bool>> {
         let collection = data
             .lock()

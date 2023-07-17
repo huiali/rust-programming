@@ -30,11 +30,7 @@ async fn create(data: web::Data<Mutex<Client>>, req: web::Json<Sample>) -> impl 
     match result {
         Ok(op) => match op {
             Some(res) => HttpResponse::Created().json(ResponseBody::new(EMPTY, res, 1)),
-            None => HttpResponse::Ok().json(ResponseBody::new(
-                "新增失败",
-                EMPTY,
-                0,
-            )),
+            None => HttpResponse::Ok().json(ResponseBody::new("新增失败", EMPTY, 0)),
         },
         err => {
             return HttpResponse::BadRequest().json(ResponseBody::new(
@@ -56,13 +52,7 @@ async fn update(
     match result {
         Ok(op) => match op {
             Some(res) => return HttpResponse::Ok().json(ResponseBody::new(EMPTY, res, 1)),
-            None => {
-                return HttpResponse::Ok().json(ResponseBody::new(
-                    "修改失败",
-                    EMPTY,
-                    0,
-                ))
-            }
+            None => return HttpResponse::Ok().json(ResponseBody::new("修改失败", EMPTY, 0)),
         },
         err => {
             return HttpResponse::BadRequest().json(ResponseBody::new(
@@ -86,13 +76,7 @@ async fn delete(data: web::Data<Mutex<Client>>, query: web::Query<IdQuery>) -> i
     match result {
         Ok(op) => match op {
             Some(res) => return HttpResponse::Ok().json(ResponseBody::new(EMPTY, res, 1)),
-            None => {
-                return HttpResponse::Ok().json(ResponseBody::new(
-                    "删除失败",
-                    EMPTY,
-                    0,
-                ))
-            }
+            None => return HttpResponse::Ok().json(ResponseBody::new("删除失败", EMPTY, 0)),
         },
         err => {
             return HttpResponse::BadRequest().json(ResponseBody::new(
