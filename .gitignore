@@ -34,3 +34,5 @@ attribute-macro/target/
 rust-course/rust01/target/
 hello-world/target/
 smart-pointers/target/
+rust-course/rust04/target/
+rust-course/rust05/target/
