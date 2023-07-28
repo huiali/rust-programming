@@ -2,6 +2,14 @@ use core::fmt::Debug;
 use std::f32::consts::PI;
 
 fn main() {
+    let red = match_color(Color::Red);
+    let blu = match_color(Color::Blue);
+    let yel = match_color(Color::Yellow);
+
+    println!("the color is {:?}", red);
+    println!("the color is {:?}", blu);
+    println!("the color is {:?}", yel);
+
     let triangle = Triangle {
         side1: 1.2,
         side2: 2.5,
@@ -13,6 +21,22 @@ fn main() {
     notify(circular, "圆形");
 }
 
+//题目4，trait在题目5中统一实现
+enum Color {
+    Red,
+    Blue,
+    Yellow,
+}
+
+fn match_color(color: Color) -> u32 {
+    match color {
+        Color::Red => 0,
+        Color::Blue => 1,
+        Color::Yellow => 2,
+    }
+}
+
+//题目5
 //定义Trait
 pub trait Add {
     fn sum(&self) -> f32;
